@@ -1,3 +1,4 @@
+#include "LangtonSimulatorWindow.hpp"
 #include "CompilerTestsWindow.hpp"
 #include "CompilationFlowWindow.hpp"
 
@@ -8,13 +9,36 @@ void populateCommonMenuBar(QMenuBar *menu_bar)
     {
         QMenu *window_menu = menu_bar->addMenu("&Window");
 
-        QAction *empty_compilation_flow_action = new QAction("New &Compilation Flow", menu_bar);
+        QAction *empty_compiler_tests_action = new QAction("New Compiler &Tests Window", menu_bar);
+
+        window_menu->addAction(empty_compiler_tests_action);
+
+        QObject::connect(empty_compiler_tests_action, &QAction::triggered, menu_bar, []() {
+            QString title = "Compiler Tests";
+            CompilerTestsWindow *w = new CompilerTestsWindow(nullptr);
+            w->setAttribute(Qt::WA_DeleteOnClose);
+            w->resize(1600, 900);
+            w->show();
+        });
+
+        QAction *empty_compilation_flow_action = new QAction("New &Compilation Flow Window", menu_bar);
 
         window_menu->addAction(empty_compilation_flow_action);
 
         QObject::connect(empty_compilation_flow_action, &QAction::triggered, menu_bar, []() {
             QString title = "Compilation Flow";
             CompilationFlowWindow *w = new CompilationFlowWindow(nullptr, title);
+            w->setAttribute(Qt::WA_DeleteOnClose);
+            w->resize(1600, 900);
+            w->show();
+        });
+
+        QAction *langton_action = new QAction("New &Langton's Ant Simulation Window", menu_bar);
+
+        window_menu->addAction(langton_action);
+
+        QObject::connect(langton_action, &QAction::triggered, menu_bar, []() {
+            LangtonSimulatorWindow *w = new LangtonSimulatorWindow();
             w->setAttribute(Qt::WA_DeleteOnClose);
             w->resize(1600, 900);
             w->show();

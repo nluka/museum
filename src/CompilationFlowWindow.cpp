@@ -250,7 +250,6 @@ CompilationFlowWindow::CompilationFlowWindow(QWidget *parent, QString const &tit
     ZoomableGraphicsView *view = new ZoomableGraphicsView(scene);
     view->setWindowTitle("AST Tree Example");
     scene->centerViewOnItems(view);
-    view->show();
 
     // Create 4 widgets to act as panes
     QWidget *pane1 = new QTextEdit("Pane 1");

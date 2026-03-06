@@ -14,7 +14,7 @@ class CompilerTestsWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    CompilerTestsWindow(QWidget *parent = nullptr);
+    CompilerTestsWindow(QWidget *parent = nullptr, QString const &title = "Compiler Tests");
 
     void loadCsv(QString const &csvPath);
 

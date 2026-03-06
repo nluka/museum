@@ -3,6 +3,7 @@
 
 #include "CompilerTestsWindow.hpp"
 #include "CompilationFlowWindow.hpp"
+#include "LangtonSimulatorWindow.hpp"
 
 #include "StartWindow.hpp"
 
@@ -26,7 +27,7 @@ StartWindow::StartWindow(QWidget *parent)
     QVector<Entry> entries = {
         { true,  "   Compiler (T)ests   ",                   'T', [this](){ openCompilerTests(); } },
         { true,  "   Compilation (F)low   ",                 'F', [this](){ openCompilationFlow(); } },
-        { false, "   (L)angton's Ant Simulator   ",          'L', [this](){ openLangton(); } },
+        { true,  "   (L)angton's Ant Simulator   ",          'L', [this](){ openLangton(); } },
         { false, "   (D)SA   ",                              'D', [this](){ openDSA(); } },
         { false, "   file(u)til   ",                         'U', [this](){ openFileUtil(); } },
         { false, "   (k)eyCap   ",                           'K', [this](){ openKeyCap(); } },
@@ -90,7 +91,6 @@ void StartWindow::keyPressEvent(QKeyEvent *ev)
     // Up/Down/Enter behavior
     //
     if (idx != -1) {
-
         // ↓ arrow → next (wrap-around)
         if (ev->key() == Qt::Key_Down) {
             int next = (idx + 1) % m_buttons.size();
@@ -154,10 +154,11 @@ void StartWindow::openKeyCap()
 
 void StartWindow::openLangton()
 {
-    // LangtonSimulatorWindow *w = new LangtonSimulatorWindow();
-    // w->setAttribute(Qt::WA_DeleteOnClose);
-    // w->resize(1600, 900);
-    // w->show();
+    LangtonSimulatorWindow *w = new LangtonSimulatorWindow();
+    w->setAttribute(Qt::WA_DeleteOnClose);
+    w->resize(1600, 900);
+    w->show();
+    w->viewer->center(10);
 }
 
 void StartWindow::openPacketCapture()

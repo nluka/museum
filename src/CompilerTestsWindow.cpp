@@ -190,10 +190,12 @@ void CompilerTestsWindow::onTableItemChanged(QTableWidgetItem *item)
     }
 }
 
-CompilerTestsWindow::CompilerTestsWindow(QWidget *parent)
+CompilerTestsWindow::CompilerTestsWindow(QWidget *parent, QString const &title)
     : QMainWindow(parent)
 {
     populateCommonMenuBar(this->menuBar());
+
+    setWindowTitle(title);
 
     QWidget *central = new QWidget(this);
     setCentralWidget(central); // Required for QMainWindow

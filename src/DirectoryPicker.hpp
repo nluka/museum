@@ -2,10 +2,7 @@
 
 #include <QWidget>
 #include <QLineEdit>
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QFileDialog>
+#include <QDragEnterEvent>
 
 class DirectoryPicker : public QWidget {
     Q_OBJECT
@@ -25,6 +22,10 @@ public slots:
 
 private slots:
     void onBrowse();
+
+protected:
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
 
 private:
     QLineEdit *pathEdit;

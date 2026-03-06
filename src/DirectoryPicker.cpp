@@ -1,3 +1,10 @@
+#include <QMimeData>
+#include <QFileInfo>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QFileDialog>
+
 #include "DirectoryPicker.hpp"
 
 DirectoryPicker::DirectoryPicker(char const *label,
@@ -19,6 +26,8 @@ DirectoryPicker::DirectoryPicker(char const *label,
 
     connect(browseButton, &QPushButton::clicked,
             this, &DirectoryPicker::onBrowse);
+
+    setAcceptDrops(true);
 }
 
 QString DirectoryPicker::path() const {
@@ -40,5 +49,31 @@ void DirectoryPicker::onBrowse() {
 
     if (!dir.isEmpty()) {
         setPath(dir);
+    }
+}
+
+void DirectoryPicker::dragEnterEvent(QDragEnterEvent *event) {
+    if (event->mimeData()->hasUrls()) {
+        auto urls = event->mimeData()->urls();
+        if (!urls.isEmpty()) {
+            QString p = urls.first().toLocalFile();
+            QFileInfo info(p);
+            if (info.isDir()) {
+                event->acceptProposedAction();
+                return;
+            }
+        }
+    }
+    event->ignore();
+}
+
+void DirectoryPicker::dropEvent(QDropEvent *event) {
+    auto urls = event->mimeData()->urls();
+    if (!urls.isEmpty()) {
+        QString p = urls.first().toLocalFile();
+        QFileInfo info(p);
+        if (info.isDir()) {
+            setPath(p);
+        }
     }
 }

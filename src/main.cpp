@@ -4,6 +4,9 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QDateTime>
+
+#include "util.hpp"
 
 #include "StartWindow.hpp"
 
@@ -18,6 +21,8 @@ int main(int argc, char *argv[])
     Q_UNUSED(asan_link_check);
 
     qDebug() << "ASAN_OPTIONS =" << getenv("ASAN_OPTIONS");
+
+    seed_fast_rand(u64(QDateTime::currentMSecsSinceEpoch()));
 
     QApplication a(argc, argv);
     StartWindow w;
