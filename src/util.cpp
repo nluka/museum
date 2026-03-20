@@ -292,7 +292,7 @@ char *path_find_filename(char *path) noexcept
     return just_the_file_name;
 }
 
-wchar_t *path_find_filename(wchar_t *path) noexcept
+wc *path_find_filename(wc *path) noexcept
 {
     // C:\code\swan\src\explorer_window.cpp
     //                  ^^^^^^^^^^^^^^^^^^^ what we are after
@@ -301,7 +301,7 @@ wchar_t *path_find_filename(wchar_t *path) noexcept
 
     assert(path != nullptr);
 
-    wchar_t *just_the_file_name = path;
+    wc *just_the_file_name = path;
 
     std::wstring_view view(just_the_file_name);
 
@@ -314,7 +314,7 @@ wchar_t *path_find_filename(wchar_t *path) noexcept
     return just_the_file_name;
 }
 
-wchar_t const *path_cfind_filename(wchar_t const *path) noexcept
+wc const *path_cfind_filename(wc const *path) noexcept
 {
     // C:\code\swan\src\explorer_window.cpp
     //                  ^^^^^^^^^^^^^^^^^^^ what we are after
@@ -323,7 +323,7 @@ wchar_t const *path_cfind_filename(wchar_t const *path) noexcept
 
     assert(path != nullptr);
 
-    wchar_t const *just_the_file_name = path;
+    wc const *just_the_file_name = path;
 
     std::wstring_view view(just_the_file_name);
 
@@ -431,18 +431,18 @@ bool cstr_empty(char const *s) noexcept
     return s[0] == '\0';
 }
 
-bool cstr_empty(wchar_t const *s) noexcept
+bool cstr_empty(wc const *s) noexcept
 {
     assert(s != nullptr);
     return s[0] == L'\0';
 }
 
-wchar_t const *windows_illegal_filename_chars() noexcept
+wc const *windows_illegal_filename_chars() noexcept
 {
     return L"\\/<>\"|?*";
 }
 
-wchar_t const *windows_illegal_path_chars() noexcept
+wc const *windows_illegal_path_chars() noexcept
 {
     return L"<>\"|?*";
 }
@@ -453,7 +453,7 @@ void cstr_clear(char *s) noexcept
     s[0] = '\0';
 }
 
-void cstr_clear(wchar_t *s) noexcept
+void cstr_clear(wc *s) noexcept
 {
     assert(s != nullptr);
     s[0] = L'\0';
@@ -566,7 +566,7 @@ bool cstr_ends_with(char const *str, char const *suffix) noexcept
     return strncmp(str + lenstr - lensuffix, suffix, lensuffix) == 0;
 }
 
-void cstr_fill(wchar_t *s, wchar_t fill_ch) noexcept
+void cstr_fill(wc *s, wc fill_ch) noexcept
 {
     assert(s != nullptr);
 

@@ -61,6 +61,10 @@ target_link_libraries(Museum
         Qt5::Widgets
 )
 
+if (WIN32)
+    target_link_libraries(Museum PRIVATE Shlwapi)
+endif()
+
 set_property(
     TARGET Museum PROPERTY VS_DEBUGGER_COMMAND $<TARGET_FILE:Museum>
 )

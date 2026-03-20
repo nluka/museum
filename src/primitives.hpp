@@ -40,3 +40,6 @@ typedef double f64;
 
 static_assert(sizeof(bool) == 1);
 typedef bool b8;
+
+static_assert(sizeof(wchar_t) == 2);
+typedef wchar_t wc;

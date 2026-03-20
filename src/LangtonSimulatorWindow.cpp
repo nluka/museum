@@ -33,6 +33,7 @@
 #include "LangtonSimulatorWindow.hpp"
 #include "LangtonGenerateRandomPopup.hpp"
 
+static
 void showErrorDialogSimple(QWidget *parent, QString const &msg)
 {
     QMessageBox box(parent);
@@ -43,6 +44,7 @@ void showErrorDialogSimple(QWidget *parent, QString const &msg)
     box.exec();
 }
 
+static
 void showErrorDialogListErrors(QWidget *parent, QString const &msg, std::vector<std::string> const &errors)
 {
     // Build the detailed text block
@@ -71,6 +73,7 @@ bool LangtonSimulatorWindow::loadRandomExample()
     return loadExample(random_example_name, random_example_json);
 }
 
+static
 QString rulesToText(langton::rules_t const &rules, u8 maxval)
 {
     std::ostringstream os;

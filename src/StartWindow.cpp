@@ -1,9 +1,11 @@
 #include <QVBoxLayout>
 #include <QKeyEvent>
+#include <QLabel>
 
 #include "CompilerTestsWindow.hpp"
 #include "CompilationFlowWindow.hpp"
 #include "LangtonSimulatorWindow.hpp"
+#include "SwanDockWindow.hpp"
 
 #include "StartWindow.hpp"
 
@@ -25,18 +27,61 @@ StartWindow::StartWindow(QWidget *parent)
     };
 
     QVector<Entry> entries = {
-        { true,  "   Compiler (T)ests   ",                   'T', [this](){ openCompilerTests(); } },
-        { true,  "   Compilation (F)low   ",                 'F', [this](){ openCompilationFlow(); } },
-        { true,  "   (L)angton's Ant Simulator   ",          'L', [this](){ openLangton(); } },
-        { false, "   (D)SA   ",                              'D', [this](){ openDSA(); } },
-        { false, "   file(u)til   ",                         'U', [this](){ openFileUtil(); } },
-        { false, "   (k)eyCap   ",                           'K', [this](){ openKeyCap(); } },
-        { false, "   Packet (C)apture Exercise   ",          'C', [this](){ openPacketCapture(); } },
-        { false, "   (P)erformance Aware Programming   ",    'P', [this](){ openPerfAware(); } },
-        { false, "   (S)wan [file explorer]   ",             'S', [this](){ openSwan(); } },
+        { 1, "   (S)wan [file explorer]   ",             'S', [this](){ openSwan(); } },
+        { 1, "   (L)angton's Ant Simulator   ",          'L', [this](){ openLangton(); } },
+        { 1, "   Compiler (T)ests   ",                   'T', [this](){ openCompilerTests(); } },
+        { 0, "   Compilation (F)low   ",                 'F', [this](){ openCompilationFlow(); } },
+        { 0, "   (D)SA   ",                              'D', [this](){ openDSA(); } },
+        { 0, "   file(u)til   ",                         'U', [this](){ openFileUtil(); } },
+        { 0, "   (k)eyCap   ",                           'K', [this](){ openKeyCap(); } },
+        { 0, "   Packet (C)apture Exercise   ",          'C', [this](){ openPacketCapture(); } },
+        { 0, "   (P)erformance Aware Programming   ",    'P', [this](){ openPerfAware(); } },
     };
 
+#if 1
     // Keep the pointers so we can handle arrow navigation
+    i32 number = 1;
+
+    for (auto &e : entries) {
+
+        QHBoxLayout *row = new QHBoxLayout();
+        row->setSpacing(12);
+
+        QLabel *numLabel = new QLabel(this);
+        numLabel->setMinimumWidth(24);
+        numLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+        QPushButton *btn = new QPushButton(e.name, this);
+        btn->setMinimumHeight(48);
+        btn->setDisabled(!e.enabled);
+
+        if (e.enabled) {
+            numLabel->setText(QString::number(number));
+            number++;
+        } else {
+            numLabel->setText("");
+        }
+
+        // Add accelerator: "&T", "&F", etc.
+        QString text = e.name;
+        int idx = text.indexOf('(' + e.key + ')');
+        if (idx >= 0)
+            text.replace(idx+1, 1, "&" + QString(e.key));
+        btn->setText(text);
+
+        row->addWidget(numLabel);
+        row->addWidget(btn, 1);
+
+        layout->addLayout(row);
+
+        connect(btn, &QPushButton::clicked, this, [this, e]() {
+            e.createWin();
+            this->close();
+        });
+
+        m_buttons.append(btn);
+    }
+#else
     for (auto &e : entries) {
         QPushButton *btn = new QPushButton(e.name, this);
         btn->setMinimumHeight(48);
@@ -59,6 +104,7 @@ StartWindow::StartWindow(QWidget *parent)
 
         m_buttons.append(btn);
     }
+#endif
 
     if (!m_buttons.isEmpty())
         m_buttons.first()->setFocus();
@@ -67,15 +113,25 @@ StartWindow::StartWindow(QWidget *parent)
 void StartWindow::keyPressEvent(QKeyEvent *ev)
 {
     //
-    // Accelerator keys: T, F, D, U, K, L, C, P, S
+    // Accelerator keys
     //
     if (!ev->text().isEmpty()) {
         QChar c = ev->text().toUpper().at(0);
 
+        if (c.isDigit()) {
+            i32 digit = c.digitValue();
+            i32 idx = digit - 1;
+            if (idx >= 0 && idx < m_buttons.size() - 1) {
+                auto &btn = m_buttons[idx];
+                btn->animateClick();
+                return;
+            }
+        }
+
         for (QPushButton *btn : m_buttons) {
             QString t = btn->text().toUpper();
             if (t.contains("&" + QString(c))) {
-                btn->click();
+                btn->animateClick();
                 return;
             }
         }
@@ -177,7 +233,8 @@ void StartWindow::openPerfAware()
 
 void StartWindow::openSwan()
 {
-    // SwanFileExplorer *w = new SwanFileExplorer();
-    // w->setAttribute(Qt::WA_DeleteOnClose);
-    // w->show();
+    SwanDockWindow *w = new SwanDockWindow();
+    w->setAttribute(Qt::WA_DeleteOnClose);
+    w->resize(1600, 900);
+    w->show();
 }

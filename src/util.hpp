@@ -70,20 +70,20 @@
 
     std::array<char, 32> format_file_size(u64 file_size, u64 unit_multiplier) noexcept;
     void format_file_size(u64 file_size, char *out, u64 out_size, u64 unit_multiplier) noexcept;
-    wchar_t const *windows_illegal_filename_chars() noexcept;
-    wchar_t const *windows_illegal_path_chars() noexcept;
+    wc const *windows_illegal_filename_chars() noexcept;
+    wc const *windows_illegal_path_chars() noexcept;
 
 // C-STRING FUNCTIONS
 
     bool cstr_eq(char const *s1, char const *s2) noexcept;
     bool cstr_empty(char const *s) noexcept;
-    bool cstr_empty(wchar_t const *s) noexcept;
+    bool cstr_empty(wc const *s) noexcept;
     bool cstr_starts_with(char const *str, char const *prefix) noexcept;
     bool cstr_ends_with(char const *str, char const *suffix) noexcept;
     u64 cstr_erase_adjacent_spaces(char *str, u64 len = 0) noexcept;
-    void cstr_fill(wchar_t *s, wchar_t fill_ch) noexcept;
+    void cstr_fill(wc *s, wc fill_ch) noexcept;
     void cstr_clear(char *s) noexcept;
-    void cstr_clear(wchar_t *s) noexcept;
+    void cstr_clear(wc *s) noexcept;
     char const *cstr_ltrim(char const *s, std::initializer_list<char> const &chars) noexcept;
     char *cstr_rtrim(char *s) noexcept;
     bool cstr_last_non_whitespace_is_one_of(char const *str, u64 len, char const *test_str) noexcept;
@@ -91,10 +91,10 @@
 // PATH FUNCTIONS AND TYPES
 
     char *              path_find_filename   (char          *path) noexcept;
-    wchar_t *           path_find_filename   (wchar_t       *path) noexcept;
+    wc *                path_find_filename   (wc            *path) noexcept;
     char *              path_find_file_ext   (char          *path) noexcept;
     char const *        path_cfind_filename  (char    const *path) noexcept;
-    wchar_t const *     path_cfind_filename  (wchar_t const *path) noexcept;
+    wc const *          path_cfind_filename  (wc      const *path) noexcept;
     char const *        path_cfind_file_ext  (char    const *path) noexcept;
     std::string_view    path_extract_location(char    const *path) noexcept;
     bool                path_drive_like      (char    const *path, u64 len = 0) noexcept; // len optional
